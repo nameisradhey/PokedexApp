@@ -5,8 +5,9 @@ import {
   useGetPokemonListQuery,
 } from '../../services/slices/pokemonApi'
 import type { PokemonListItem, ViewMode } from './home.types'
+import { Constants } from '../../setup/theme/'
 
-const PAGE_SIZE = 10
+
 
 export const useHomeController = () => {
   const navigation = useNavigation()
@@ -20,14 +21,15 @@ export const useHomeController = () => {
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const selectedType = route.name.toLowerCase() === 'all' ? 'all' : route.name.toLowerCase()
   const isTypeMode = selectedType !== 'all'
+  const currentLimit = Math.min(Constants.Page_Size, Constants.Max_Pokemon_Count - offset)
 
   const { data: listData, isFetching: isListFetching } = useGetPokemonListQuery(
     {
-      limit: PAGE_SIZE,
+      limit: currentLimit,
       offset,
     },
     {
-      skip: isTypeMode,
+      skip: isTypeMode || currentLimit <= 0,
     }
   )
 
@@ -43,7 +45,7 @@ export const useHomeController = () => {
     setAllPokemonList(prev => {
       const existing = new Set(prev.map(item => item.url))
       const nextItems = listData.results.filter(item => !existing.has(item.url))
-      return [...prev, ...nextItems]
+      return [...prev, ...nextItems].slice(0, Constants.Max_Pokemon_Count)
     })
     setIsLoadingMore(false)
   }, [listData])
@@ -65,10 +67,18 @@ export const useHomeController = () => {
 
   const loadMore = () => {
     if (isTypeMode) return
+    if (allPokemonList.length >= Constants.Max_Pokemon_Count) return
 
     if (!isListFetching && listData?.next) {
       setIsLoadingMore(true)
-      setOffset(prev => prev + PAGE_SIZE)
+      const nextOffset = offset + Constants.Page_Size
+
+      if (nextOffset >= Constants.Max_Pokemon_Count) {
+        setIsLoadingMore(false)
+        return
+      }
+
+      setOffset(nextOffset)
     }
   }
 

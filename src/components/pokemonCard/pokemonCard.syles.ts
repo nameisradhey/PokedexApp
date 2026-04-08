@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { Colors } from '../../setup/theme'
 
 export const styles = StyleSheet.create({
   gridCard: {
@@ -7,9 +8,9 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 14,
     minHeight: 188,
-    backgroundColor: 'rgba(255,255,255,0.6)',
+    backgroundColor: Colors.cardSurface,
     borderWidth: 1,
-    borderColor: 'rgb(211, 211, 211)',
+    borderColor: Colors.cardSurfaceBorder,
     overflow: 'hidden',
     alignItems: 'flex-start',
   },
@@ -21,33 +22,33 @@ export const styles = StyleSheet.create({
     borderRadius: 18,
     padding: 12,
     minHeight: 124,
-    backgroundColor: 'rgba(255,255,255,0.6)',
+    backgroundColor: Colors.cardSurface,
     borderWidth: 1,
     overflow: 'hidden',
-    borderColor: 'rgb(211, 211, 211)',
+    borderColor: Colors.cardSurfaceBorder,
   },
   idText: {
     fontSize: 13,
-    color: '#aaa',
+    color: Colors.cardIdText,
     fontWeight: '600',
     marginBottom: 2,
   },
   listIdText: {
     fontSize: 15,
-    color: '#aaa',
+    color: Colors.cardIdText,
     fontWeight: '600',
     marginBottom: 2,
   },
   nameText: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: Colors.cardNameText,
     marginBottom: 6,
   },
   listNameText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: Colors.cardNameText,
     marginBottom: 6,
   },
   typesRow: {
@@ -65,13 +66,13 @@ export const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '600',
     textTransform: 'capitalize',
-    color: '#fff',
+    color: Colors.cardTypeText,
   },
   listTypeBadgeText: {
     fontSize: 13,
     fontWeight: '600',
     textTransform: 'capitalize',
-    color: '#fff',
+    color: Colors.cardTypeText,
   },
   gridSprite: {
     width: 90,
@@ -90,13 +91,13 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   skeletonBlock: {
-    backgroundColor: 'rgba(215, 215, 215, 0.85)',
+    backgroundColor: Colors.cardSkeleton,
     borderRadius: 12,
   },
   skeletonLine: {
     height: 12,
     borderRadius: 999,
-    backgroundColor: 'rgba(215, 215, 215, 0.85)',
+    backgroundColor: Colors.cardSkeleton,
     marginBottom: 8,
   },
   skeletonIdLine: {
@@ -110,7 +111,7 @@ export const styles = StyleSheet.create({
   skeletonPill: {
     height: 24,
     borderRadius: 999,
-    backgroundColor: 'rgba(215, 215, 215, 0.85)',
+    backgroundColor: Colors.cardSkeleton,
   },
   skeletonTypePill: {
     width: 74,

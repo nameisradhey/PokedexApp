@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
+import { Colors } from '../../setup/theme';
 
 export const styles = StyleSheet.create({
   drawerWindow: {
     width: 210,
-    backgroundColor: 'rgba(20,20,30,1)',
+    backgroundColor: Colors.drawerBackground,
   },
   container: {
     flex: 1,
@@ -13,7 +14,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: Colors.drawerTitle,
     fontWeight: '800',
     letterSpacing: 1.4,
     textTransform: 'uppercase',

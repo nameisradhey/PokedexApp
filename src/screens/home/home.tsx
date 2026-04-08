@@ -73,7 +73,7 @@ const HomeScreen: React.FC = () => {
             />
           )}
           onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={0.1}
           showsVerticalScrollIndicator={false}
           ListFooterComponent={
             !isTypeMode && isLoadingMore ? (

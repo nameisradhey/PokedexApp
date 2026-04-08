@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import {Colors } from '../../setup/theme'
+import { Colors } from '../../setup/theme'
 
 export const styles = StyleSheet.create({
   root: {
@@ -14,9 +14,9 @@ export const styles = StyleSheet.create({
   },
   // Red header
   header: {
-    backgroundColor:Colors.primary,
+    backgroundColor: Colors.primary,
     paddingBottom: 10,
-    shadowColor: '#000',
+    shadowColor: Colors.headerShadow,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 6,
@@ -39,16 +39,16 @@ export const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
     borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.5)',
+    borderColor: Colors.headerPokeballBorder,
     alignItems: 'center',
     justifyContent: 'center',
   },
   logoText: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#ffffff',
+    color: Colors.textLight,
     letterSpacing: -0.3,
   },
 

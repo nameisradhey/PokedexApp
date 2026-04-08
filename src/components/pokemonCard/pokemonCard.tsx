@@ -8,9 +8,11 @@ import type { PokemonCardProps } from "./pokemonCard.types";
 
 const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, viewMode }) => {
   const { data: detail, isFetching } = useGetPokemonDetailQuery(pokemon.url);
-  const formattedId = detail ? `#${String(detail.id).padStart(4, "0")}` : "####";
+  const formattedId = detail
+    ? `#${String(detail.id).padStart(4, "0")}`
+    : "####";
   const types = detail?.types.map((typeItem) => typeItem.type.name) ?? [];
-  const sprite = detail ? PokemonURL.OFFICIAL_ARTWORK(detail.id) : undefined;
+  const sprite = detail ? PokemonURL.Pokemon_Image(detail.id) : undefined;
   const displayType = types.find((t) => t !== "normal") || "normal";
   const isLoading = isFetching || !detail;
 
@@ -40,7 +42,11 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, viewMode }) => {
           <View style={[styles.skeletonPill, styles.skeletonTypePillShort]} />
         </View>
         <View
-          style={[styles.gridSprite, styles.skeletonBlock, styles.skeletonSprite]}
+          style={[
+            styles.gridSprite,
+            styles.skeletonBlock,
+            styles.skeletonSprite,
+          ]}
         />
       </View>
     );

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { Colors } from '../../setup/theme'
 
 export const styles = StyleSheet.create({
   container: {
@@ -11,12 +12,12 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: Colors.toggleBg,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.25)',
+    borderColor: Colors.toggleBorder,
   },
   btnActive: {
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    backgroundColor: Colors.toggleActiveBg,
   },
   icon: {
     fontSize: 15,

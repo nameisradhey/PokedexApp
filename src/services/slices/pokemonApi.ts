@@ -26,7 +26,7 @@ export const pokemonApi = createApi({
     }),
 
     getPokemonByType: builder.query<PokemonTypeResponse, string>({
-      query: type => PokemonURL.BY_TYPE(type),
+      query: type => PokemonURL.By_Type(type),
     }),
 
     getPokemonDetail: builder.query<PokemonDetailResponse, string>({
