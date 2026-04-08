@@ -1,4 +1,4 @@
-export const TYPE_META : Record<string, { color: string; emoji: string }> = {
+export const Type_Meta : Record<string, { color: string; emoji: string }> = {
   all:      { color: '#888780', emoji: '🔘' },
   fire:     { color: '#E84343', emoji: '🔥' },
   water:    { color: '#378add', emoji: '🌊' },

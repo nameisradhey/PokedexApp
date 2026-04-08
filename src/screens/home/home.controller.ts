@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigation, DrawerActions } from '@react-navigation/native'
+import { useNavigation, DrawerActions, useRoute } from '@react-navigation/native'
 import {
   useGetPokemonByTypeQuery,
   useGetPokemonListQuery,
@@ -10,14 +10,15 @@ const PAGE_SIZE = 10
 
 export const useHomeController = () => {
   const navigation = useNavigation()
+  const route = useRoute()
 
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
-  const [selectedType, setSelectedType] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [offset, setOffset] = useState(0)
   const [allPokemonList, setAllPokemonList] = useState<PokemonListItem[]>([])
   const [typedPokemonList, setTypedPokemonList] = useState<PokemonListItem[]>([])
   const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const selectedType = route.name.toLowerCase() === 'all' ? 'all' : route.name.toLowerCase()
   const isTypeMode = selectedType !== 'all'
 
   const { data: listData, isFetching: isListFetching } = useGetPokemonListQuery(
@@ -59,10 +60,6 @@ export const useHomeController = () => {
   }, [selectedType])
 
   const openDrawer = () => {
-    navigation.setParams({
-      selectedType,
-      onSelectType: setSelectedType,
-    } as never)
     navigation.dispatch(DrawerActions.openDrawer())
   }
 
@@ -71,9 +68,7 @@ export const useHomeController = () => {
 
     if (!isListFetching && listData?.next) {
       setIsLoadingMore(true)
-      if (offset!=1350) {
-        setOffset(prev => prev + PAGE_SIZE)
-      }
+      setOffset(prev => prev + PAGE_SIZE)
     }
   }
 
@@ -91,7 +86,6 @@ export const useHomeController = () => {
     viewMode,
     setViewMode,
     selectedType,
-    setSelectedType,
     searchQuery,
     setSearchQuery,
     openDrawer,

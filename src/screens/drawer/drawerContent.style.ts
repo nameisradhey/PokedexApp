@@ -1,12 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  // The actual sliding window configuration
   drawerWindow: {
     width: 210,
     backgroundColor: 'rgba(20,20,30,1)',
   },
-  // The layout inside the drawer
   container: {
     flex: 1,
     paddingTop: 70,

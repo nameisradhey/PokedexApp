@@ -1,4 +1,4 @@
-export const COLORS = {
+export const Colors = {
   // Main theme
   primary: '#CC0000',
   primaryDark: '#990000',
@@ -10,7 +10,6 @@ export const COLORS = {
   textSecondary: '#666666',
   textLight: '#ffffff',
   textMuted: 'rgba(255,255,255,0.6)',
-
   // Type colors
   
 }

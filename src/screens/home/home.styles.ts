@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native'
-import { COLORS } from '../../setup/theme'
+import {Colors } from '../../setup/theme'
 
 export const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor:Colors.background,
   },
   logo:{
     width: 200,
@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   },
   // Red header
   header: {
-    backgroundColor: COLORS.primary,
+    backgroundColor:Colors.primary,
     paddingBottom: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
@@ -45,14 +45,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  pokeballInner: {
-    width: 14,
-    height: 14,
-    borderRadius: 7,
-    backgroundColor: COLORS.primary,
-    borderWidth: 2,
-    borderColor: '#cc0000',
-  },
   logoText: {
     fontSize: 20,
     fontWeight: '700',
@@ -74,7 +66,7 @@ export const styles = StyleSheet.create({
   },
   countText: {
     fontSize: 12,
-    color: COLORS.textSecondary,
+    color:Colors.textSecondary,
     fontWeight: '500',
   },
   listContent: {
@@ -87,6 +79,6 @@ export const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 15,
-    color: COLORS.textSecondary,
+    color:Colors.textSecondary,
   },
 })

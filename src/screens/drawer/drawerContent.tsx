@@ -17,9 +17,6 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingTop: 0 }}
       >
-        {/* This component handles the logic of which item is "active" 
-          based on the current route, satisfying the Drawer.Screen requirement.
-        */}
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
 

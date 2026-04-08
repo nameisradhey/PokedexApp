@@ -123,7 +123,7 @@ export const styles = StyleSheet.create({
   },
   decorEmoji:{
     position: 'absolute',
-    top: 130,
+    top: 132,
     right: -10,
     fontSize: 50,
     opacity: 0.40,
