@@ -1,12 +1,19 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { ActivityIndicator, View, Text } from "react-native";
 import HomeScreen from "../home/home";
+
 import DrawerContent from "./drawerContent";
 import { useGetPokemonTypesQuery } from "../../services/slices/pokemonApi";
 import { styles } from "./drawerContent.style";
 import { Type_Meta } from "../../setup/theme";
+
+export type RootStackParamList = {
+  Home: { selectedType: string };
+  PokemonDetail: { id: number; name: string };
+};
 
 const Drawer = createDrawerNavigator();
 
@@ -37,18 +44,16 @@ const AppNavigator: React.FC = () => {
         screenOptions={({ route }) => ({
           headerShown: false,
           drawerType: "slide",
-          drawerStyle: styles.drawerWindow, // Applying style from your stylesheet
+          drawerStyle: styles.drawerWindow,
           overlayColor: "rgba(0,0,0,0.7)",
           drawerActiveBackgroundColor:
-            (Type_Meta[route.name]?.color + '50') || "rgba(255, 255, 255, 0.2)",
+            Type_Meta[route.name]?.color + "50" || "rgba(255,255,255,0.2)",
           drawerActiveTintColor: "#fff",
-          drawerActiveBorderColor: Type_Meta[route.name]?.color || "transparent",
           drawerInactiveTintColor: "rgba(255,255,255,0.7)",
           drawerItemStyle: styles.item,
           drawerLabelStyle: styles.label,
         })}
       >
-
         <Drawer.Screen
           name="All"
           component={HomeScreen}
@@ -60,7 +65,7 @@ const AppNavigator: React.FC = () => {
         {pokemonTypes.map((type: any) => (
           <Drawer.Screen
             key={type.name}
-           name={type.name} 
+            name={type.name}
             component={HomeScreen}
             initialParams={{ selectedType: type.name }}
             options={{
