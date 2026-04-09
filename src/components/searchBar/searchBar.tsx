@@ -3,7 +3,7 @@ import { View, TextInput, TouchableOpacity, Text } from 'react-native'
 import { styles } from './searchBar.styles'
 import type { SearchBarProps } from './searchBar.types'
 
-const SearchBar: React.FC<SearchBarProps> = ({ value, onChangeText, onMenuPress }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ value, onChangeText, onMenuPress, onFocus }) => {
   return (
     <View style={styles.row}>
       <TouchableOpacity style={styles.menuBtn} onPress={onMenuPress} activeOpacity={0.7}>
@@ -16,6 +16,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChangeText, onMenuPress 
           style={styles.input}
           value={value}
           onChangeText={onChangeText}
+          onFocus={onFocus}
           placeholder="Search Pokémon..."
           placeholderTextColor="rgba(255,255,255,0.5)"
           returnKeyType="search"

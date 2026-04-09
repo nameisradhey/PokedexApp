@@ -29,17 +29,19 @@ const HomeScreen: React.FC = () => {
     selectedType,
     searchQuery,
     setSearchQuery,
+    onSearchFocus,
     filteredPokemon,
     openDrawer,
     loadMore,
     isFetching,
     isLoadingMore,
     isTypeMode,
+    isSearchMode,
   } = useHomeController();
 
   return (
     <View style={styles.root}>
-      <View style={[styles.header, { paddingTop: top }]}>
+      <View style={[styles.header, { paddingTop: top }]}> 
         <View style={styles.headerTop}>
           <Image source={pngs.adaptiveIcon} style={styles.logo} />
         </View>
@@ -47,6 +49,7 @@ const HomeScreen: React.FC = () => {
           value={searchQuery}
           onChangeText={setSearchQuery}
           onMenuPress={openDrawer}
+          onFocus={onSearchFocus}
         />
       </View>
 
@@ -72,11 +75,11 @@ const HomeScreen: React.FC = () => {
               numColumns={numColumns}
             />
           )}
-          onEndReached={handleLoadMore}
+          onEndReached={isSearchMode ? undefined : handleLoadMore}
           onEndReachedThreshold={0.1}
           showsVerticalScrollIndicator={false}
           ListFooterComponent={
-            !isTypeMode && isLoadingMore ? (
+            !isTypeMode && !isSearchMode && isLoadingMore ? (
               <ActivityIndicator size="small" color="#cc0000" />
             ) : null
           }

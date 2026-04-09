@@ -14,15 +14,15 @@ export interface PokemonListParams {
 
 export const pokemonApi = createApi({
   reducerPath: 'pokemonApi',
-  baseQuery: fetchBaseQuery({ baseUrl: PokemonURL.BASE }),
+  baseQuery: fetchBaseQuery({ baseUrl: PokemonURL.Base }),
   endpoints: builder => ({
     getPokemonList: builder.query<PokemonListResponse, PokemonListParams>({
       query: ({ limit, offset }) =>
-        `${PokemonURL.LIST}?limit=${limit}&offset=${offset}`,
+        `${PokemonURL.List}?limit=${limit}&offset=${offset}`,
     }),
 
     getPokemonTypes: builder.query<PokemonTypesListResponse, void>({
-      query: () => PokemonURL.TYPES,
+      query: () => PokemonURL.Types,
     }),
 
     getPokemonByType: builder.query<PokemonTypeResponse, string>({
@@ -30,7 +30,7 @@ export const pokemonApi = createApi({
     }),
 
     getPokemonDetail: builder.query<PokemonDetailResponse, string>({
-      query: url => url.replace(PokemonURL.BASE, ''),
+      query: url => url.replace(PokemonURL.Base, ''),
     }),
   }),
 })

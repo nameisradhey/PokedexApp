@@ -20,11 +20,7 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
 
-      <View style={{ paddingLeft: 20, paddingTop: 10 }}>
-        <Text style={{ color: "rgba(255,255,255,0.3)", fontSize: 12 }}>
-          Pokedex v1.0
-        </Text>
-      </View>
+      
     </View>
   );
 };
