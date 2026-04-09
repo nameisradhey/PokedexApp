@@ -122,10 +122,11 @@ export const useHomeController = () => {
     return sourceList.filter((pokemon) =>
       pokemon.name.toLowerCase().includes(normalizedQuery),
     );
-  }, [ debouncedSearch, searchPoolData]);
+  }, [activePokemonList, debouncedSearch, searchPoolData]);
 
-  const isFetching =
-    isTypeMode ? isTypeFetching : isListFetching || isSearchPoolFetching;
+  const isFetching = isTypeMode
+    ? isTypeFetching
+    : isListFetching || isSearchPoolFetching;
 
   return {
     viewMode,
@@ -140,6 +141,6 @@ export const useHomeController = () => {
     isFetching,
     isLoadingMore,
     isTypeMode,
-    isSearchMode : debouncedSearch.length > 0,
-    };
+    isSearchMode: debouncedSearch.length > 0,
+  };
 };
