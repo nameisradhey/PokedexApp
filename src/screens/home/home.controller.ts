@@ -26,8 +26,17 @@ export const useHomeController = () => {
   const [shouldFetchSearchPool, setShouldFetchSearchPool] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const selectedType =
-    route.name.toLowerCase() === "all" ? "all" : route.name.toLowerCase();
+  const routeSelectedType =
+    typeof route.params === "object" &&
+    route.params !== null &&
+    "selectedType" in route.params &&
+    typeof route.params.selectedType === "string"
+      ? route.params.selectedType
+      : undefined;
+
+  const selectedType = (routeSelectedType ?? route.name).toLowerCase() === "all"
+    ? "all"
+    : (routeSelectedType ?? route.name).toLowerCase();
   const isTypeMode = selectedType !== "all";
   const currentLimit = Math.min(
     Constants.Page_Size,

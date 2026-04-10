@@ -1,12 +1,17 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Type_Meta } from "../../setup/theme";
 import { useGetPokemonDetailQuery } from "../../services/slices/pokemonApi";
 import { PokemonURL } from "../../services/urls/pokemon.urls";
+import type { RootStackParamList } from "../../screens/drawer/appNavigator";
 import { styles } from "./pokemonCard.syles";
 import type { PokemonCardProps } from "./pokemonCard.types";
 
 const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, viewMode }) => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { data: detail, isFetching } = useGetPokemonDetailQuery(pokemon.url);
   const formattedId = detail
     ? `#${String(detail.id).padStart(4, "0")}`
@@ -15,6 +20,15 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, viewMode }) => {
   const sprite = detail ? PokemonURL.Pokemon_Image(detail.id) : undefined;
   const displayType = types.find((t) => t !== "normal") || "normal";
   const isLoading = isFetching || !detail;
+  const handlePress = () => {
+    if (!detail) return;
+
+    navigation.navigate("PokemonDetail", {
+      id: detail.id,
+      name: detail.name,
+      url: pokemon.url,
+    });
+  };
 
   if (isLoading && viewMode === "list") {
     return (
@@ -54,7 +68,11 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, viewMode }) => {
 
   if (viewMode === "list") {
     return (
-      <TouchableOpacity style={styles.listCard} activeOpacity={0.75}>
+      <TouchableOpacity
+        style={styles.listCard}
+        activeOpacity={0.75}
+        onPress={handlePress}
+      >
         <Image
           source={{ uri: sprite }}
           style={styles.listSprite}
@@ -85,7 +103,11 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, viewMode }) => {
   }
 
   return (
-    <TouchableOpacity style={styles.gridCard} activeOpacity={0.75}>
+    <TouchableOpacity
+      style={styles.gridCard}
+      activeOpacity={0.75}
+      onPress={handlePress}
+    >
       <Text style={styles.decorEmoji}>
         {Type_Meta[displayType]?.emoji ?? "❓"}
       </Text>

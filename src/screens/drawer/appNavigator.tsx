@@ -9,13 +9,28 @@ import DrawerContent from "./drawerContent";
 import { useGetPokemonTypesQuery } from "../../services/slices/pokemonApi";
 import { styles } from "./drawerContent.style";
 import { Type_Meta } from "../../setup/theme";
+import { PokemonPage } from "../../components";
 
 export type RootStackParamList = {
   Home: { selectedType: string };
-  PokemonDetail: { id: number; name: string };
+  PokemonDetail: { id: number; name: string; url: string };
 };
 
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+// Each drawer item renders this stack
+// so detail screen is reachable from any type tab
+const HomeStack = ({ route }: any) => (
+  <Stack.Navigator screenOptions={{ headerShown: false, animation: "ios_from_right" }}>
+    <Stack.Screen
+      name="Home"
+      component={HomeScreen}
+      initialParams={{ selectedType: route.params?.selectedType ?? "all" }}
+    />
+    <Stack.Screen name="PokemonDetail" component={PokemonPage} />
+  </Stack.Navigator>
+);
 
 const AppNavigator: React.FC = () => {
   const { data, isLoading } = useGetPokemonTypesQuery();
@@ -56,7 +71,7 @@ const AppNavigator: React.FC = () => {
       >
         <Drawer.Screen
           name="All"
-          component={HomeScreen}
+          component={HomeStack}
           initialParams={{ selectedType: "all" }}
           options={{
             drawerIcon: () => <Text>🔘</Text>,
@@ -66,7 +81,7 @@ const AppNavigator: React.FC = () => {
           <Drawer.Screen
             key={type.name}
             name={type.name}
-            component={HomeScreen}
+            component={HomeStack}
             initialParams={{ selectedType: type.name }}
             options={{
               title: type.name,
