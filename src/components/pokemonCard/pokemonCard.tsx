@@ -23,7 +23,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, viewMode }) => {
   const handlePress = () => {
     if (!detail) return;
 
-    navigation.navigate("PokemonDetail", {
+    navigation.navigate("PokemonPage", {
       id: detail.id,
       name: detail.name,
       url: pokemon.url,

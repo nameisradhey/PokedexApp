@@ -13,7 +13,7 @@ import { PokemonPage } from "../../components";
 
 export type RootStackParamList = {
   Home: { selectedType: string };
-  PokemonDetail: { id: number; name: string; url: string };
+  PokemonPage: { id: number; name: string; url: string };
 };
 
 const Drawer = createDrawerNavigator();
@@ -28,7 +28,7 @@ const HomeStack = ({ route }: any) => (
       component={HomeScreen}
       initialParams={{ selectedType: route.params?.selectedType ?? "all" }}
     />
-    <Stack.Screen name="PokemonDetail" component={PokemonPage} />
+    <Stack.Screen name="PokemonPage" component={PokemonPage} />
   </Stack.Navigator>
 );
 

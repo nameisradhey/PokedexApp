@@ -1,46 +1,36 @@
-export interface PokemonListResult {
-  name: string
-  url: string
-}
-
-export interface PokemonListResponse {
-  count: number
-  next: string | null
-  previous: string | null
-  results: PokemonListResult[]
-}
-
-export interface PokemonTypesListResponse {
-  results: {
-    name: string
-    url: string
-  }[]
-}
-
-export interface PokemonTypeResponse {
-  id: number
-  name: string
-  pokemon: {
-    pokemon: PokemonListResult
-    slot: number
-  }[]
-}
-
 export interface PokemonDetailResponse {
   id: number
   name: string
+  height: number
+  weight: number
+  base_experience: number
   sprites: {
+    front_default: string | null
+    back_default:  string | null
+    front_shiny:   string | null
     other: {
-      ['official-artwork']: {
+      "official-artwork": {
         front_default: string
       }
     }
   }
   types: {
+    type: { name: string; url: string }
+  }[]
+  stats: {
+    base_stat: number
+    stat: { name: string }
+  }[]
+  abilities: {
+    ability: { name: string }
+    is_hidden: boolean
     slot: number
-    type: {
-      name: string
-      url: string
-    }
+  }[]
+  moves: {
+    move: { name: string }
+    version_group_details: {
+      level_learned_at: number
+      move_learn_method: { name: string }
+    }[]
   }[]
 }
