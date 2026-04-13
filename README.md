@@ -131,11 +131,8 @@ Main endpoints used:
 
 ## Future Improvements
 
-- Add stronger type coverage for navigation and API models
-- Add unit and integration tests
 - Add favorites or caught Pokemon tracking
 - Improve detail screen with more stats and abilities
-- Add image placeholders and better error states
 
 ## Author
 
