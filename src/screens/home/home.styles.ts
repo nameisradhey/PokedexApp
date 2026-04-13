@@ -27,8 +27,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 16,
-    paddingBottom: 20,
+    paddingBottom: 16,
   },
   logoRow: {
     flexDirection: 'row',
