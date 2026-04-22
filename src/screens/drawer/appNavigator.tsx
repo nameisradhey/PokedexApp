@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { ActivityIndicator, View, Text } from "react-native";
 import HomeScreen from "../home/home";
-
 import DrawerContent from "./drawerContent";
 import { useGetPokemonTypesQuery } from "../../services/slices/pokemonApi";
 import { styles } from "./drawerContent.style";
@@ -19,18 +18,22 @@ export type RootStackParamList = {
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-// Each drawer item renders this stack
-// so detail screen is reachable from any type tab
-const HomeStack = ({ route }: any) => (
-  <Stack.Navigator screenOptions={{ headerShown: false, animation: "ios_from_right" }}>
-    <Stack.Screen
-      name="Home"
-      component={HomeScreen}
-      initialParams={{ selectedType: route.params?.selectedType ?? "all" }}
-    />
-    <Stack.Screen name="PokemonPage" component={PokemonPage} />
-  </Stack.Navigator>
-);
+const HomeStack = ({ route }: any) => {
+  const selectedType = route.params?.selectedType ?? route.name;
+
+  return (
+    <Stack.Navigator
+      screenOptions={{ headerShown: false, animation: "ios_from_right" }}
+    >
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        initialParams={{ selectedType }}
+      />
+      <Stack.Screen name="PokemonPage" component={PokemonPage} />
+    </Stack.Navigator>
+  );
+};
 
 const AppNavigator: React.FC = () => {
   const { data, isLoading } = useGetPokemonTypesQuery();
@@ -75,6 +78,14 @@ const AppNavigator: React.FC = () => {
           initialParams={{ selectedType: "all" }}
           options={{
             drawerIcon: () => <Text>🔘</Text>,
+          }}
+        />
+        <Drawer.Screen
+          name="Favourites"
+          component={HomeStack}
+          initialParams={{ selectedType: "favourites" }}
+          options={{
+            drawerIcon: () => <Text>❤️</Text>,
           }}
         />
         {pokemonTypes.map((type: any) => (

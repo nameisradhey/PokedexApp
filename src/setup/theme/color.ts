@@ -47,4 +47,8 @@ export const Colors = {
   cardTypeText: '#fff',
   cardSkeleton: 'rgba(215, 215, 215, 0.85)',
   typeFallback: '#888',
+  cardSurfaceHover: '#fff',
+
+  heart:"#ff6767c6",
+  heartBorder: 'rgba(255,103,103,0.8)',
 }

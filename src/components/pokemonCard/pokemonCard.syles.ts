@@ -7,12 +7,11 @@ export const styles = StyleSheet.create({
     margin: 6,
     borderRadius: 20,
     padding: 14,
-    minHeight: 188,
+    height: 200,
     backgroundColor: Colors.cardSurface,
     borderWidth: 1,
     borderColor: Colors.cardSurfaceBorder,
     overflow: 'hidden',
-    alignItems: 'flex-start',
   },
   listCard: {
     flexDirection: 'row',
@@ -125,7 +124,7 @@ export const styles = StyleSheet.create({
   decorEmoji:{
     position: 'absolute',
     top: 132,
-    right: -10,
+    right: -20,
     fontSize: 50,
     opacity: 0.40,
   },

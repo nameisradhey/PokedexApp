@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,8 @@ import { SearchBar, PokemonCard, ViewToggle } from "../../components";
 import { styles } from "./home.styles";
 import type { PokemonListItem } from "./home.types";
 import { pngs } from "../../assets/png";
+import FavoriteButton from "../../components/favouriteButton/favouriteButton";
+import type { FavoriteButtonRef } from "../../components/favouriteButton/favouriteButton.types";
 
 const HomeScreen: React.FC = () => {
   const { width } = useWindowDimensions();
@@ -22,6 +24,7 @@ const HomeScreen: React.FC = () => {
     if (isFetching) return;
     loadMore();
   };
+  const dropZoneRef = useRef<FavoriteButtonRef>(null);
 
   const {
     viewMode,
@@ -41,7 +44,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <View style={styles.root}>
-      <View style={[styles.header, { paddingTop: top }]}> 
+      <View style={[styles.header, { paddingTop: top }]}>
         <View style={styles.headerTop}>
           <Image source={pngs.adaptiveIcon} style={styles.logo} />
         </View>
@@ -61,7 +64,7 @@ const HomeScreen: React.FC = () => {
           </Text>
           <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
         </View>
-
+        <FavoriteButton ref={dropZoneRef} />
         <FlatList
           key={`${viewMode}-${numColumns}`}
           data={filteredPokemon}
@@ -73,6 +76,7 @@ const HomeScreen: React.FC = () => {
               pokemon={item}
               viewMode={viewMode}
               numColumns={numColumns}
+              dropZoneRef={dropZoneRef}
             />
           )}
           onEndReached={isSearchMode ? undefined : handleLoadMore}

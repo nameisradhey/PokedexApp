@@ -5,7 +5,7 @@ import type {
   PokemonTypeResponse,
   PokemonTypesListResponse,
   PokemonDetailResponse,
-} from '../response/pokemon'
+} from '../response/pokemon.ts'
 
 export interface PokemonListParams {
   limit: number

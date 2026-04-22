@@ -34,3 +34,28 @@ export interface PokemonDetailResponse {
     }[]
   }[]
 }
+
+export interface PokemonListResponse {
+  count: number
+  next: string | null
+  previous: string | null
+  results: {
+    name: string
+    url: string
+  }[]
+}
+
+export interface PokemonTypeResponse {
+  name: string
+  pokemon: {
+    pokemon: { name: string; url: string }
+  }[]
+}
+
+export interface PokemonTypesListResponse {
+  count: number
+  results: {
+    name: string
+    url: string
+  }[]
+}

@@ -34,16 +34,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
-  pokeball: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: Colors.white,
-    borderWidth: 2,
-    borderColor: Colors.headerPokeballBorder,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   logoText: {
     fontSize: 20,
     fontWeight: '700',

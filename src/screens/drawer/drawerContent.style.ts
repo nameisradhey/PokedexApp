@@ -19,12 +19,12 @@ export const styles = StyleSheet.create({
     letterSpacing: 1.4,
     textTransform: 'uppercase',
     marginBottom: 18,
-    paddingLeft: 30,
+    paddingLeft: 28,
   },
   item: {
     borderRadius: 50,
     marginVertical: 4,
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
   },
   label: {
     fontSize: 15,
