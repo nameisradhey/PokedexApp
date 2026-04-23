@@ -7,5 +7,4 @@ export interface PokemonCardProps {
   viewMode: ViewMode
   numColumns: number
   dropZoneRef?: RefObject<FavoriteButtonRef | null>
-
 }

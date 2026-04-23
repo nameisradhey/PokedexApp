@@ -1,38 +1,46 @@
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import { Text, View } from "react-native";
 import { styles } from "./favouriteButton.styles";
-import {
-  FavoriteButtonProps,
-  FavoriteButtonRef,
-  Pokemon,
-} from "./favouriteButton.types";
 import { saveFavorite } from "../../services/storage/favorites.storage";
+import type { Pokemon, FavoriteButtonRef } from "./favouriteButton.types";
 
-const FavoriteButton = forwardRef<FavoriteButtonRef, FavoriteButtonProps>(
-  (props, ref) => {
-    const buttonRef = useRef<View>(null);
+const FavoriteButton = forwardRef<FavoriteButtonRef>((props, ref) => {
+  const buttonRef = useRef<View>(null);
 
-    useImperativeHandle(ref, () => ({
-      checkDrop: (pokemon: Pokemon, x: number, y: number) => {
-        buttonRef.current?.measureInWindow(
-          (buttonX, buttonY, width, height) => {
-            const isInsideX = x >= buttonX && x <= buttonX + width;
-            const isInsideY = y >= buttonY && y <= buttonY + height;
+  const layoutRef = useRef({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+  });
 
-            if (isInsideX && isInsideY) {
-              saveFavorite(pokemon);
-            }
-          },
-        );
-      },
-    }));
+  const updateLayout = () => {
+    buttonRef.current?.measureInWindow((x, y, width, height) => {
+      layoutRef.current = { x, y, width, height };
+    });
+  };
 
-    return (
-      <View ref={buttonRef} style={styles.heartView}>
-        <Text style={styles.heart}>❤️</Text>
-      </View>
-    );
-  },
-);
+  useImperativeHandle(ref, () => ({
+    checkDrop: (pokemon: Pokemon, x: number, y: number) => {
+      let isInside = false;
+
+      buttonRef.current?.measureInWindow((bx, by, width, height) => {
+        isInside = x >= bx && x <= bx + width && y >= by && y <= by + height;
+
+        if (isInside) {
+          saveFavorite(pokemon);
+        }
+      });
+
+      return isInside;
+    },
+  }));
+
+  return (
+    <View ref={buttonRef} onLayout={updateLayout} style={styles.heartView}>
+      <Text style={styles.heart}>❤️</Text>
+    </View>
+  );
+});
 
 export default FavoriteButton;

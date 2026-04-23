@@ -12,6 +12,7 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
+  withTiming,
   runOnJS,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -21,32 +22,61 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
   viewMode,
   dropZoneRef,
 }) => {
-
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { data: detail, isFetching } = useGetPokemonDetailQuery(pokemon.url);
 
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
-  const isDragging = useSharedValue(0);
   const scale = useSharedValue(1);
-  const bgcolor= useSharedValue(Colors.cardSurface);
+  const opacity = useSharedValue(1);
+  const isDragging = useSharedValue(0);
+  const bgcolor = useSharedValue(Colors.cardSurface);
+
+  const resetPosition = () => {
+    translateX.value = withSpring(0);
+    translateY.value = withSpring(0);
+    scale.value = withSpring(1);
+    opacity.value = withSpring(1);
+    bgcolor.value = withSpring(Colors.cardSurface);
+  };
+
+  const absorb = () => {
+    scale.value = withSpring(0, { damping: 15 });
+    opacity.value = withTiming(0, { duration: 200 });
+
+    translateY.value = withTiming(-80, { duration: 200 }, () => {
+      translateX.value = 0;
+      translateY.value = 0;
+      scale.value = 1;
+      opacity.value = 1;
+      bgcolor.value = Colors.cardSurface;
+    });
+  };
 
   const handleDrop = (x: number, y: number) => {
-    if (!detail) return;
-    dropZoneRef?.current?.checkDrop(
+    const pokemonUrl = pokemon.url ?? pokemon?.pokemon?.url;
+
+    const success = dropZoneRef?.current?.checkDrop(
       {
-        id: detail.id,
-        name: detail.name,
-        url: pokemon.url,
+        id: detail?.id ?? 0,
+        name: detail?.name ?? pokemon.name,
+        url: pokemonUrl,
       },
       x,
       y,
     );
+
+    if (success) {
+      absorb();
+    } else {
+      resetPosition();
+    }
   };
 
   const gesture = Gesture.Pan()
     .onStart(() => {
-      isDragging.value = 100;
+      isDragging.value = 1;
       scale.value = withSpring(1.1);
       bgcolor.value = withSpring(Colors.cardSurfaceHover);
     })
@@ -56,11 +86,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
     })
     .onEnd((event) => {
       runOnJS(handleDrop)(event.absoluteX, event.absoluteY);
-      translateX.value = withSpring(0);
-      translateY.value = withSpring(0);
-      scale.value = withSpring(1);
-      isDragging.value = withSpring(0);
-      bgcolor.value = withSpring(Colors.cardSurface); 
+      isDragging.value = 0;
     });
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -70,18 +96,21 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
         { translateY: translateY.value },
         { scale: scale.value },
       ],
+      opacity: opacity.value,
       zIndex: isDragging.value ? 100 : 0,
       position: "relative",
       backgroundColor: bgcolor.value,
     };
   });
-  
-  const formattedId = detail ? `#${String(detail.id).padStart(4, "0")}`: "####";
+
+  const formattedId = detail
+    ? `#${String(detail.id).padStart(4, "0")}`
+    : "####";
   const types = detail?.types.map((typeItem) => typeItem.type.name) ?? [];
   const sprite = detail ? PokemonURL.Pokemon_Image(detail.id) : undefined;
   const displayType = types.find((t) => t !== "normal") || "normal";
   const isLoading = isFetching || !detail;
-  
+
   const handlePress = () => {
     if (!detail) return;
     navigation.navigate("PokemonPage", {
@@ -136,11 +165,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
             activeOpacity={0.75}
             onPress={handlePress}
           >
-            <Image
-              source={{ uri: sprite }}
-              style={styles.listSprite}
-              resizeMode="contain"
-            />
+            <Image source={{ uri: sprite }} style={styles.listSprite} />
             <View style={styles.listInfo}>
               <Text style={styles.listIdText}>{formattedId}</Text>
               <Text style={styles.listNameText}>{detail.name}</Text>
@@ -166,7 +191,6 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
       </GestureDetector>
     );
   }
-
 
   return (
     <GestureDetector gesture={gesture}>
@@ -194,11 +218,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
               </View>
             ))}
           </View>
-          <Image
-            source={{ uri: sprite }}
-            style={styles.gridSprite}
-            resizeMode="contain"
-          />
+          <Image source={{ uri: sprite }} style={styles.gridSprite} />
         </TouchableOpacity>
       </Animated.View>
     </GestureDetector>

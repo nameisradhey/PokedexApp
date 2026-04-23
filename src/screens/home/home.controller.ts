@@ -78,9 +78,15 @@ export const useHomeController = () => {
   }, [listData]);
 
   useEffect(() => {
-    if (!isTypeMode || !typeData?.pokemon) return;
-    setTypedPokemonList(typeData.pokemon.map((item) => item.pokemon));
-  }, [isTypeMode, typeData]);
+  if (!isTypeMode || !typeData?.pokemon) return;
+
+  const normalized = typeData.pokemon.map((item) => ({
+    name: item.pokemon.name,
+    url: item.pokemon.url,
+  }));
+
+  setTypedPokemonList(normalized);
+}, [isTypeMode, typeData]);
 
   useEffect(() => {
     if (selectedType === "all") {
