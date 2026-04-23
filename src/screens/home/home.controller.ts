@@ -15,6 +15,7 @@ import { getFavorites, storage } from "../../services/storage/favorites.storage"
 export const useHomeController = () => {
   const navigation = useNavigation();
   const route = useRoute();
+
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -46,18 +47,26 @@ export const useHomeController = () => {
     Constants.Max_Pokemon_Count - offset
   );
 
-  const { data: listData, isFetching: isListFetching } =
-    useGetPokemonListQuery(
-      { limit: currentLimit, offset },
-      {
-        skip: isTypeMode || isFavourites || currentLimit <= 0,
-      }
-    );
+  const {
+    data: listData,
+    isFetching: isListFetching,
+    error: listError,
+    refetch: refetchList,
+  } = useGetPokemonListQuery(
+    { limit: currentLimit, offset },
+    {
+      skip: isTypeMode || isFavourites || currentLimit <= 0,
+    }
+  );
 
-  const { data: typeData, isFetching: isTypeFetching } =
-    useGetPokemonByTypeQuery(selectedType, {
-      skip: !isTypeMode,
-    });
+  const {
+    data: typeData,
+    isFetching: isTypeFetching,
+    error: typeError,
+    refetch: refetchType,
+  } = useGetPokemonByTypeQuery(selectedType, {
+    skip: !isTypeMode,
+  });
 
   const { data: searchPoolData, isFetching: isSearchPoolFetching } =
     useGetPokemonListQuery(
@@ -78,15 +87,15 @@ export const useHomeController = () => {
   }, [listData]);
 
   useEffect(() => {
-  if (!isTypeMode || !typeData?.pokemon) return;
+    if (!isTypeMode || !typeData?.pokemon) return;
 
-  const normalized = typeData.pokemon.map((item) => ({
-    name: item.pokemon.name,
-    url: item.pokemon.url,
-  }));
+    const normalized = typeData.pokemon.map((item) => ({
+      name: item.pokemon.name,
+      url: item.pokemon.url,
+    }));
 
-  setTypedPokemonList(normalized);
-}, [isTypeMode, typeData]);
+    setTypedPokemonList(normalized);
+  }, [isTypeMode, typeData]);
 
   useEffect(() => {
     if (selectedType === "all") {
@@ -170,6 +179,16 @@ export const useHomeController = () => {
     ? isTypeFetching
     : isListFetching || isSearchPoolFetching;
 
+  const isError = isTypeMode ? !!typeError : !!listError;
+
+  const retry = () => {
+    if (isTypeMode) {
+      refetchType();
+    } else {
+      refetchList();
+    }
+  };
+
   return {
     viewMode,
     setViewMode,
@@ -184,5 +203,7 @@ export const useHomeController = () => {
     isLoadingMore,
     isTypeMode,
     isSearchMode: debouncedSearch.length > 0,
+    isError,
+    retry,
   };
 };
