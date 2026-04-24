@@ -15,6 +15,7 @@ export interface PokemonListParams {
 export const pokemonApi = createApi({
   reducerPath: 'pokemonApi',
   baseQuery: fetchBaseQuery({ baseUrl: PokemonURL.Base }),
+  tagTypes: ['PokemonTypes'], // 👈 ADD THIS
   endpoints: builder => ({
     getPokemonList: builder.query<PokemonListResponse, PokemonListParams>({
       query: ({ limit, offset }) =>
@@ -23,6 +24,7 @@ export const pokemonApi = createApi({
 
     getPokemonTypes: builder.query<PokemonTypesListResponse, void>({
       query: () => PokemonURL.Types,
+      providesTags: ['PokemonTypes'], // 👈 ADD THIS
     }),
 
     getPokemonByType: builder.query<PokemonTypeResponse, string>({

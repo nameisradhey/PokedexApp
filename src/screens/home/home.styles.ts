@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
   },
   noInternetImage: {
     width: 190,
-    height: 180,
+    height: 170,
     marginBottom: 20,
     borderRadius: 120,
   },

@@ -16,6 +16,7 @@ import Animated, {
   runOnJS,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { PokemonListItem } from "../../screens/home/home.types";
 
 const PokemonCard: React.FC<PokemonCardProps> = ({
   pokemon,
@@ -55,13 +56,17 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
   };
 
   const handleDrop = (x: number, y: number) => {
-    const pokemonUrl = pokemon.url ?? pokemon?.pokemon?.url;
+    const normalizePokemon = (item: any): PokemonListItem => {
+      return "pokemon" in item ? item.pokemon : item;
+    };
+
+    const normalized = normalizePokemon(pokemon);
 
     const success = dropZoneRef?.current?.checkDrop(
       {
         id: detail?.id ?? 0,
-        name: detail?.name ?? pokemon.name,
-        url: pokemonUrl,
+        name: detail?.name ?? normalized.name,
+        url: normalized.url,
       },
       x,
       y,

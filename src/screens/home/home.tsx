@@ -23,6 +23,7 @@ const HomeScreen: React.FC = () => {
   const numColumns = width > 600 ? 3 : 2;
 
   const dropZoneRef = useRef<FavoriteButtonRef>(null);
+  const endReachedDuringMomentumRef = useRef(true);
 
   const {
     viewMode,
@@ -34,17 +35,27 @@ const HomeScreen: React.FC = () => {
     filteredPokemon,
     openDrawer,
     loadMore,
-    isFetching,
+    canLoadMore,
     isLoadingMore,
+    showPaginationRetry,
+    retryPagination,
     isTypeMode,
     isSearchMode,
     isError,
     retry,
   } = useHomeController();
 
-  const handleLoadMore = () => {
-    if (isFetching) return;
+  const handleEndReached = () => {
+    if (endReachedDuringMomentumRef.current) return;
+    if (!canLoadMore) return;
+
+    endReachedDuringMomentumRef.current = true;
     loadMore();
+  };
+
+  const handleRetryPagination = () => {
+    endReachedDuringMomentumRef.current = true;
+    retryPagination();
   };
 
   return (
@@ -64,7 +75,9 @@ const HomeScreen: React.FC = () => {
       <View style={styles.body}>
         <View style={styles.toolbar}>
           <Text style={styles.countText}>
-            {isError ? "No Internet Connection" : filteredPokemon.length + " Pokémon"}
+            {isError
+              ? "No Internet Connection"
+              : filteredPokemon.length + " Pokémon"}
             {selectedType !== "all" ? ` · ${selectedType}` : ""}
           </Text>
           <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
@@ -73,9 +86,7 @@ const HomeScreen: React.FC = () => {
         <FavoriteButton ref={dropZoneRef} />
 
         {isError ? (
-          <View
-            style={styles.noInternetContainer}
-          >
+          <View style={styles.noInternetContainer}>
             <Image
               source={pngs.noInternet}
               style={styles.noInternetImage}
@@ -87,10 +98,7 @@ const HomeScreen: React.FC = () => {
             <Text style={styles.noInternetWarning2}>
               Please check your connection
             </Text>
-            <TouchableOpacity
-              onPress={retry}
-              style={styles.noInternetButton}
-            >
+            <TouchableOpacity onPress={retry} style={styles.noInternetButton}>
               <Text style={{ color: "#fff", fontWeight: "600" }}>Retry</Text>
             </TouchableOpacity>
           </View>
@@ -109,12 +117,37 @@ const HomeScreen: React.FC = () => {
                 dropZoneRef={dropZoneRef}
               />
             )}
-            onEndReached={isSearchMode ? undefined : handleLoadMore}
+            onEndReached={
+              isSearchMode || !canLoadMore ? undefined : handleEndReached
+            }
             onEndReachedThreshold={0.1}
+            onMomentumScrollBegin={() => {
+              endReachedDuringMomentumRef.current = false;
+            }}
+            onScrollBeginDrag={() => {
+              endReachedDuringMomentumRef.current = false;
+            }}
             showsVerticalScrollIndicator={false}
             ListFooterComponent={
-              !isTypeMode && !isSearchMode && isLoadingMore ? (
-                <ActivityIndicator size="small" color="#cc0000" />
+              !isTypeMode && !isSearchMode ? (
+                isLoadingMore ? (
+                  <ActivityIndicator size="small" color="#cc0000" />
+                ) : showPaginationRetry ? (
+                  <TouchableOpacity
+                    onPress={handleRetryPagination}
+                    style={{
+                      alignSelf: "center",
+                      padding: 10,
+                      borderRadius: 50,
+                      backgroundColor: "#cc0000",
+                      marginVertical: 10,
+                    }}
+                  >
+                    <Text style={{ color: "#fff", fontWeight: "600" }}>
+                      Retry
+                    </Text>
+                  </TouchableOpacity>
+                ) : null
               ) : null
             }
           />
