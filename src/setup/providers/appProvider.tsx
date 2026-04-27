@@ -1,17 +1,18 @@
-import React from 'react'
-import { Provider } from 'react-redux'
-import { store } from '../../services/apiclient/store'
+import React from "react";
+import { Provider } from "react-redux";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { store } from "../../services/apiclient/store";
 
 interface AppProviderProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
-const appProvider: React.FC<AppProviderProps> = ({ children }) => {
+const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
-    <Provider store={store}>
-      {children}
-    </Provider>
-  )
-}
+    <SafeAreaProvider>
+      <Provider store={store}>{children}</Provider>
+    </SafeAreaProvider>
+  );
+};
 
-export default appProvider
+export default AppProvider;
